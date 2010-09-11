@@ -6,6 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.carste_lenz.liquibasegui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- scala.library
+ org.scala-ide.scala.library
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: liquibase.jar,
+ .

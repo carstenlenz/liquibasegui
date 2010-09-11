@@ -59,6 +59,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         
         messagePopupAction = new MessagePopupAction("Open Message", window);
         register(messagePopupAction);
+        
+        
     }
     
     protected void fillMenuBar(IMenuManager menuBar) {

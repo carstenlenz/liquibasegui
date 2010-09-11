@@ -35,6 +35,13 @@
             class="de.carste_lenz.liquibasegui.NavigationView"
             id="de.carste_lenz.liquibasegui.navigationView">
       </view>
+      <view
+            allowMultiple="false"
+            class="de.carste_lenz.liquibasegui.ui.CommandView"
+            id="de.carste_lenz.liquibasegui.commandView"
+            name="Command View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -53,6 +60,11 @@
             description="Open a message dialog"
             categoryId="de.carste_lenz.liquibasegui.category"
             id="de.carste_lenz.liquibasegui.openMessage">
+      </command>
+      <command
+            defaultHandler="de.carsten_lenz.liquibasegui.ui.OpenCommandViewHandler"
+            id="de.carste_lenz.liquibasegui.openCommandView"
+            name="Open Command View">
       </command>
    </extension>
    <extension
@@ -92,6 +104,15 @@
                value="product_lg.gif">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="org.eclipse.ui.main.menu">
+      </menuContribution>
    </extension>
 
 </plugin>
