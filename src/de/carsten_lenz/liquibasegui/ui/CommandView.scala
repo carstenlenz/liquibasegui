@@ -11,6 +11,7 @@ class CommandView extends ViewPart {
     def createPartControl(parent: Composite) = {
         val gridLayout = new GridLayout()
         parent.setLayout(gridLayout)
+        
         val configComboViewer = new ComboViewer(parent, SWT.NONE)
         
         val gd = new GridData(SWT.FILL, SWT.CENTER, true, false)
