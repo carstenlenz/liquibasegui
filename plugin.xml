@@ -62,7 +62,7 @@
             id="de.carste_lenz.liquibasegui.openMessage">
       </command>
       <command
-            defaultHandler="de.carsten_lenz.liquibasegui.ui.OpenCommandViewHandler"
+            defaultHandler="de.carste_lenz.liquibasegui.ui.OpenCommandViewHandler"
             id="de.carste_lenz.liquibasegui.openCommandView"
             name="Open Command View">
       </command>
@@ -111,7 +111,14 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="org.eclipse.ui.main.menu">
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="NewFile">
+            <command
+                  commandId="de.carste_lenz.liquibasegui.openCommandView"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
    </extension>
 
