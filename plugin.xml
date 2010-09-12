@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="de.carste_lenz.liquibasegui.Application">
+               class="de.carsten_lenz.liquibasegui.Application">
          </run>
       </application>
    </extension>
@@ -15,8 +15,8 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
-            class="de.carste_lenz.liquibasegui.Perspective"
-            id="de.carste_lenz.liquibasegui.perspective">
+            class="de.carsten_lenz.liquibasegui.Perspective"
+            id="de.carsten_lenz.liquibasegui.perspective">
       </perspective>
    </extension>
    <extension
@@ -25,20 +25,20 @@
             name="Message"
             allowMultiple="true"
             icon="icons/sample2.gif"
-            class="de.carste_lenz.liquibasegui.View"
-            id="de.carste_lenz.liquibasegui.view">
+            class="de.carsten_lenz.liquibasegui.View"
+            id="de.carsten_lenz.liquibasegui.view">
       </view>
       <view
             name="Mailboxes"
             allowMultiple="true"
             icon="icons/sample3.gif"
-            class="de.carste_lenz.liquibasegui.NavigationView"
-            id="de.carste_lenz.liquibasegui.navigationView">
+            class="de.carsten_lenz.liquibasegui.NavigationView"
+            id="de.carsten_lenz.liquibasegui.navigationView">
       </view>
       <view
             allowMultiple="false"
-            class="de.carste_lenz.liquibasegui.ui.CommandView"
-            id="de.carste_lenz.liquibasegui.commandView"
+            class="de.carsten_lenz.liquibasegui.ui.CommandView"
+            id="de.carsten_lenz.liquibasegui.commandView"
             name="Command View"
             restorable="true">
       </view>
@@ -47,35 +47,35 @@
          point="org.eclipse.ui.commands">
       <category
             name="Mail"
-            id="de.carste_lenz.liquibasegui.category">
+            id="de.carsten_lenz.liquibasegui.category">
       </category>
       <command
             name="Open Mailbox"
             description="Opens a mailbox"
-            categoryId="de.carste_lenz.liquibasegui.category"
-            id="de.carste_lenz.liquibasegui.open">
+            categoryId="de.carsten_lenz.liquibasegui.category"
+            id="de.carsten_lenz.liquibasegui.open">
       </command>
       <command
             name="Open Message Dialog"
             description="Open a message dialog"
-            categoryId="de.carste_lenz.liquibasegui.category"
-            id="de.carste_lenz.liquibasegui.openMessage">
+            categoryId="de.carsten_lenz.liquibasegui.category"
+            id="de.carsten_lenz.liquibasegui.openMessage">
       </command>
       <command
-            defaultHandler="de.carste_lenz.liquibasegui.ui.OpenCommandViewHandler"
-            id="de.carste_lenz.liquibasegui.openCommandView"
+            defaultHandler="de.carsten_lenz.liquibasegui.ui.OpenCommandViewHandler"
+            id="de.carsten_lenz.liquibasegui.openCommandView"
             name="Open Command View">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="de.carste_lenz.liquibasegui.open"
+            commandId="de.carsten_lenz.liquibasegui.open"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+2">
       </key>
       <key
-            commandId="de.carste_lenz.liquibasegui.openMessage"
+            commandId="de.carsten_lenz.liquibasegui.openMessage"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+3">
       </key>
@@ -89,7 +89,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="de.carste_lenz.liquibasegui.application"
+            application="de.carsten_lenz.liquibasegui.application"
             name="Liquibase GUI">
          <property
                name="aboutText"
@@ -115,7 +115,7 @@
          <menu
                label="NewFile">
             <command
-                  commandId="de.carste_lenz.liquibasegui.openCommandView"
+                  commandId="de.carsten_lenz.liquibasegui.openCommandView"
                   style="push">
             </command>
          </menu>

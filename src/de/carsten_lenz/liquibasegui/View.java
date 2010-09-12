@@ -16,7 +16,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class View extends ViewPart {
 
-	public static final String ID = "de.carste_lenz.liquibasegui.view";
+	public static final String ID = "de.carsten_lenz.liquibasegui.view";
 	
 	public void createPartControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);

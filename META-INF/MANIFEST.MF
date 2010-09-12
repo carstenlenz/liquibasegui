@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Liquibase GUI
 Bundle-SymbolicName: de.carsten_lenz.liquibasegui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.carste_lenz.liquibasegui.Activator
+Bundle-Activator: de.carsten_lenz.liquibasegui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.scala-ide.scala.library

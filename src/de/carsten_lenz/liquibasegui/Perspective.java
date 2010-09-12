@@ -9,7 +9,7 @@ public class Perspective implements IPerspectiveFactory {
 	/**
 	 * The ID of the perspective as specified in the extension.
 	 */
-	public static final String ID = "de.carste_lenz.liquibasegui.perspective";
+	public static final String ID = "de.carsten_lenz.liquibasegui.perspective";
 
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();

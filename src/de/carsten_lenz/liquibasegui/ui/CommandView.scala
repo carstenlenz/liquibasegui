@@ -17,7 +17,7 @@ class CommandView extends ViewPart {
         configComboViewer.getCombo().setLayoutData(gd)
     }
     
-    def setFocus() = null
+    def setFocus() = {}
 }
 
 object CommandView {

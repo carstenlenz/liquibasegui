@@ -9,7 +9,7 @@ package de.carsten_lenz.liquibasegui;
  */
 public interface ICommandIds {
 
-    public static final String CMD_OPEN = "de.carste_lenz.liquibasegui.open";
-    public static final String CMD_OPEN_MESSAGE = "de.carste_lenz.liquibasegui.openMessage";
+    public static final String CMD_OPEN = "de.carsten_lenz.liquibasegui.open";
+    public static final String CMD_OPEN_MESSAGE = "de.carsten_lenz.liquibasegui.openMessage";
     
 }
