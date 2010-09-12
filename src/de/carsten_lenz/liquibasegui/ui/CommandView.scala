@@ -1,4 +1,4 @@
-package de.carste_lenz.liquibasegui.ui
+package de.carsten_lenz.liquibasegui.ui
 
 import org.eclipse.ui.part.ViewPart
 import org.eclipse.swt.widgets._

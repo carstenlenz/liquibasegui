@@ -1,4 +1,4 @@
-package de.carste_lenz.liquibasegui;
+package de.carsten_lenz.liquibasegui;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;

@@ -1,4 +1,4 @@
-package de.carste_lenz.liquibasegui;
+package de.carsten_lenz.liquibasegui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -21,7 +21,7 @@ public class OpenViewAction extends Action {
 		setId(ICommandIds.CMD_OPEN);
         // Associate the action with a pre-defined command, to allow key bindings.
 		setActionDefinitionId(ICommandIds.CMD_OPEN);
-		setImageDescriptor(de.carste_lenz.liquibasegui.Activator.getImageDescriptor("/icons/sample2.gif"));
+		setImageDescriptor(de.carsten_lenz.liquibasegui.Activator.getImageDescriptor("/icons/sample2.gif"));
 	}
 	
 	public void run() {

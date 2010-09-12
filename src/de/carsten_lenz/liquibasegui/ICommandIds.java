@@ -1,4 +1,4 @@
-package de.carste_lenz.liquibasegui;
+package de.carsten_lenz.liquibasegui;
 
 /**
  * Interface defining the application's command IDs.
