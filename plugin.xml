@@ -42,6 +42,11 @@
             name="Command View"
             restorable="true">
       </view>
+      <view
+            class="de.carsten_lenz.liquibasegui.ui.TestView"
+            id="de.carsten_lenz.liquibasegui.ui.TestView"
+            name="New ViewPart">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
