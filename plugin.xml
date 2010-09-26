@@ -71,6 +71,10 @@
             id="de.carsten_lenz.liquibasegui.openCommandView"
             name="Open Command View">
       </command>
+      <command
+            id="de.carsten_lenz.liquibasegui.openRunConfigurations"
+            name="Open Liquibase Run-Configurations">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -112,6 +116,10 @@
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
+      <handler
+            class="de.carsten_lenz.liquibasegui.ui.OpenRunConfigurationsHandler"
+            commandId="de.carsten_lenz.liquibasegui.openRunConfigurations">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -121,6 +129,10 @@
                label="NewFile">
             <command
                   commandId="de.carsten_lenz.liquibasegui.openCommandView"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.carsten_lenz.liquibasegui.openRunConfigurations"
                   style="push">
             </command>
          </menu>
