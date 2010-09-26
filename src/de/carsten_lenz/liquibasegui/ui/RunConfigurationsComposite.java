@@ -32,10 +32,12 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.ValidationStatusProvider;
+import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import de.carsten_lenz.liquibasegui.model.RunConfiguration;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -50,6 +52,7 @@ public class RunConfigurationsComposite extends Composite {
     private DataBindingContext m_bindingContext;
     
     private IObservableList configurations;
+    private IObservableValue currentConfiguration = new WritableValue();
     
     private Text nameTxt;
     private Text connectionStringText;
@@ -60,6 +63,8 @@ public class RunConfigurationsComposite extends Composite {
     private Table changeLogParametersTable;
     private ListViewer runConfigurationsListViewer;
     private TableViewer changeLogParametersTableViewer;
+
+    private IObservableList currentChangeLogParameters;
 
     /**
      * Create the composite.
@@ -215,12 +220,27 @@ public class RunConfigurationsComposite extends Composite {
         composite_3.setLayout(gl_composite_3);
         
         Button btnNew = new Button(composite_3, SWT.NONE);
+        btnNew.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnNew.setText("New");
+        btnNew.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ChangeLogParameterDialog dialog = new ChangeLogParameterDialog(getShell());
+                ChangeLogParameter changeLogParameter = new ChangeLogParameter();
+                dialog.setChangeLogParameter(changeLogParameter);
+                if (dialog.open() == Window.OK) {
+                    currentChangeLogParameters.add(changeLogParameter);
+                }
+                
+            }
+        });
         
         Button btnEdit = new Button(composite_3, SWT.NONE);
+        btnEdit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnEdit.setText("Edit");
         
         Button btnDelete = new Button(composite_3, SWT.NONE);
+        btnDelete.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnDelete.setText("Delete");
         
         Composite composite_4 = new Composite(databaseComposite, SWT.NONE);
@@ -257,6 +277,10 @@ public class RunConfigurationsComposite extends Composite {
 
         configurations = new WritableList();
         m_bindingContext = initDataBindings();
+        
+        IViewerObservableValue configSelection = ViewerProperties.singleSelection().observe(runConfigurationsListViewer);
+        m_bindingContext.bindValue(configSelection, currentConfiguration);
+        
         IObservableList validationStatusProviders = m_bindingContext.getValidationStatusProviders();
         for (Object o : validationStatusProviders) {
             ((ValidationStatusProvider)o).getValidationStatus().addChangeListener(new IChangeListener() {
@@ -274,6 +298,10 @@ public class RunConfigurationsComposite extends Composite {
         this.configurations.addAll(configurations);
     }
 
+    private RunConfiguration getCurrentConfiguration() {
+        return (RunConfiguration) currentConfiguration.getValue();
+    }
+    
     @Override
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
@@ -318,8 +346,8 @@ public class RunConfigurationsComposite extends Composite {
         bindingContext.bindValue(runConfigurationsListViewerChangeLogObserveDetailValue, observeTextChangeLogFilePathTextObserveWidget, strategy, strategy_1);
         //
         IObservableValue observeSingleSelectionRunConfigurationsListViewer_6 = ViewerProperties.singleSelection().observe(runConfigurationsListViewer);
-        IObservableList runConfigurationsListViewerChangeLogParametersObserveDetailList = PojoProperties.list(RunConfiguration.class, "changeLogParameters", ChangeLogParameter.class).observeDetail(observeSingleSelectionRunConfigurationsListViewer_6);
-        ViewerSupport.bind(changeLogParametersTableViewer, runConfigurationsListViewerChangeLogParametersObserveDetailList, PojoProperties.values(ChangeLogParameter.class, new String[]{"key", "value"}));
+        currentChangeLogParameters = PojoProperties.list(RunConfiguration.class, "changeLogParameters", ChangeLogParameter.class).observeDetail(observeSingleSelectionRunConfigurationsListViewer_6);
+        ViewerSupport.bind(changeLogParametersTableViewer, currentChangeLogParameters, PojoProperties.values(ChangeLogParameter.class, new String[]{"key", "value"}));
         //
         return bindingContext;
     }
