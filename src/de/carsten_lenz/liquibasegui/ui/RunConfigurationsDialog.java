@@ -26,6 +26,7 @@ public class RunConfigurationsDialog extends TitleAreaDialog {
      */
     public RunConfigurationsDialog(Shell parentShell) {
         super(parentShell);
+        setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE | SWT.APPLICATION_MODAL);
     }
 
     /**
@@ -34,6 +35,7 @@ public class RunConfigurationsDialog extends TitleAreaDialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
+        setTitle("Run Configurations");
         Composite area = (Composite) super.createDialogArea(parent);
         Composite container = new Composite(area, SWT.NONE);
         container.setLayout(new FillLayout(SWT.HORIZONTAL));

@@ -1,12 +1,31 @@
 package de.carsten_lenz.liquibasegui.ui;
 
+import java.io.File;
+
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.ValidationStatusProvider;
+import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.ComputedValue;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -29,24 +48,11 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.ValidationStatusProvider;
-import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
-import org.eclipse.jface.databinding.viewers.ViewerSupport;
-import org.eclipse.core.databinding.beans.PojoProperties;
-import de.carsten_lenz.liquibasegui.model.RunConfiguration;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import java.io.File;
+
 import de.carsten_lenz.liquibasegui.model.ChangeLogParameter;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import de.carsten_lenz.liquibasegui.model.RunConfiguration;
 import de.carsten_lenz.liquibasegui.util.FileToStringConverter;
 import de.carsten_lenz.liquibasegui.util.StringToFileConverter;
-import org.eclipse.swt.layout.RowLayout;
 
 public class RunConfigurationsComposite extends Composite {
     private DataBindingContext m_bindingContext;
@@ -65,6 +71,14 @@ public class RunConfigurationsComposite extends Composite {
     private TableViewer changeLogParametersTableViewer;
 
     private IObservableList currentChangeLogParameters;
+
+    private ComputedValue isParameterSelected;
+
+    private Button btnNew;
+
+    private Button btnEdit;
+
+    private Button btnDelete;
 
     /**
      * Create the composite.
@@ -219,7 +233,7 @@ public class RunConfigurationsComposite extends Composite {
         gl_composite_3.marginWidth = 0;
         composite_3.setLayout(gl_composite_3);
         
-        Button btnNew = new Button(composite_3, SWT.NONE);
+        btnNew = new Button(composite_3, SWT.NONE);
         btnNew.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnNew.setText("New");
         btnNew.addSelectionListener(new SelectionAdapter() {
@@ -235,13 +249,48 @@ public class RunConfigurationsComposite extends Composite {
             }
         });
         
-        Button btnEdit = new Button(composite_3, SWT.NONE);
+        btnEdit = new Button(composite_3, SWT.NONE);
         btnEdit.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnEdit.setText("Edit");
+        btnEdit.setEnabled(false);
+        btnEdit.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ChangeLogParameter parameter = getSelectedChangeLogParameter();
+                if (parameter != null) {
+                    ChangeLogParameterDialog dialog = new ChangeLogParameterDialog(getShell());
+                    dialog.setChangeLogParameter(parameter);
+                    dialog.open();
+                }
+            }
+        });
         
-        Button btnDelete = new Button(composite_3, SWT.NONE);
+        btnDelete = new Button(composite_3, SWT.NONE);
         btnDelete.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btnDelete.setText("Delete");
+        btnDelete.setEnabled(false);
+        btnDelete.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ChangeLogParameter parameter = getSelectedChangeLogParameter();
+                if (parameter != null) {
+                    currentChangeLogParameters.remove(parameter);
+                }
+            }
+        });
+        
+        changeLogParametersTableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                if (event.getSelection() != null) {
+                    btnEdit.setEnabled(true);
+                    btnDelete.setEnabled(true);
+                } else {
+                    btnEdit.setEnabled(false);
+                    btnDelete.setEnabled(false);
+                }
+            }
+        });
         
         Composite composite_4 = new Composite(databaseComposite, SWT.NONE);
         GridLayout gl_composite_4 = new GridLayout(2, false);
@@ -259,8 +308,7 @@ public class RunConfigurationsComposite extends Composite {
         btnApply.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                m_bindingContext.updateTargets();
-                btnApply.setEnabled(false);
+                applyPressed(btnApply);
             }
         });
         
@@ -269,7 +317,7 @@ public class RunConfigurationsComposite extends Composite {
         btnRevert.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                m_bindingContext.updateModels();
+                revertPressed();
             }
         });
         
@@ -277,6 +325,9 @@ public class RunConfigurationsComposite extends Composite {
 
         configurations = new WritableList();
         m_bindingContext = initDataBindings();
+        
+        currentChangeLogParameters = new WritableList();
+        ViewerSupport.bind(changeLogParametersTableViewer, currentChangeLogParameters, PojoProperties.values(ChangeLogParameter.class, new String[]{"key", "value"}));
         
         IViewerObservableValue configSelection = ViewerProperties.singleSelection().observe(runConfigurationsListViewer);
         m_bindingContext.bindValue(configSelection, currentConfiguration);
@@ -289,6 +340,13 @@ public class RunConfigurationsComposite extends Composite {
                 }
             });
         }
+        
+        currentConfiguration.addValueChangeListener(new IValueChangeListener() {
+            public void handleValueChange(ValueChangeEvent event) {
+                btnApply.setEnabled(false);
+                fillChangeLogParametersFromCurrentConfig();
+            }
+        });
         
         tabFolder.setSelection(tbtmDatabase);
     }
@@ -345,10 +403,37 @@ public class RunConfigurationsComposite extends Composite {
         strategy_1.setConverter(new StringToFileConverter());
         bindingContext.bindValue(runConfigurationsListViewerChangeLogObserveDetailValue, observeTextChangeLogFilePathTextObserveWidget, strategy, strategy_1);
         //
-        IObservableValue observeSingleSelectionRunConfigurationsListViewer_6 = ViewerProperties.singleSelection().observe(runConfigurationsListViewer);
-        currentChangeLogParameters = PojoProperties.list(RunConfiguration.class, "changeLogParameters", ChangeLogParameter.class).observeDetail(observeSingleSelectionRunConfigurationsListViewer_6);
-        ViewerSupport.bind(changeLogParametersTableViewer, currentChangeLogParameters, PojoProperties.values(ChangeLogParameter.class, new String[]{"key", "value"}));
         //
         return bindingContext;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void applyPressed(final Button btnApply) {
+        m_bindingContext.updateTargets();
+        java.util.List<ChangeLogParameter> changeLogParameters = getCurrentConfiguration().getChangeLogParameters();
+        changeLogParameters.clear();
+        changeLogParameters.addAll(currentChangeLogParameters);
+        btnApply.setEnabled(false);
+    }
+
+    private void revertPressed() {
+        m_bindingContext.updateModels();
+        fillChangeLogParametersFromCurrentConfig();
+    }
+
+    private void fillChangeLogParametersFromCurrentConfig() {
+        currentChangeLogParameters.clear();
+        Object value = currentConfiguration.getValue();
+        if (value instanceof RunConfiguration) {
+            for (ChangeLogParameter parameter : ((RunConfiguration)value).getChangeLogParameters()) {
+                currentChangeLogParameters.add(parameter.copy());
+            }
+        }
+    }
+
+    private ChangeLogParameter getSelectedChangeLogParameter() {
+        IStructuredSelection selection = (IStructuredSelection) changeLogParametersTableViewer.getSelection();
+        ChangeLogParameter parameter = (ChangeLogParameter) selection.getFirstElement();
+        return parameter;
     }
 }

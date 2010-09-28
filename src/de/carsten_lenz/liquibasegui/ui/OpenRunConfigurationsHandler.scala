@@ -16,6 +16,9 @@ class OpenRunConfigurationsHandler extends AbstractHandler with HandlerHelpers {
         config1.setConnectionString("jdbc://blabla")
         config1.setUserName("hamsdi")
         
+        val params1 = List(new ChangeLogParameter("env", "dev"), new ChangeLogParameter("hulla", "hu"));
+        config1.getChangeLogParameters().addAll(params1.asJava);
+        
         val config2 = new RunConfiguration
         config2.setConfigurationName("config2")
         config2.setConnectionString("jdbc://huibuh")
