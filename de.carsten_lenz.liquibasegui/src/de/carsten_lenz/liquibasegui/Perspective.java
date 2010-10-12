@@ -3,6 +3,7 @@ package de.carsten_lenz.liquibasegui;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+import org.eclipse.ui.console.IConsoleConstants;
 
 public class Perspective implements IPerspectiveFactory {
 
@@ -19,6 +20,10 @@ public class Perspective implements IPerspectiveFactory {
 		IFolderLayout folder = layout.createFolder("messages", IPageLayout.TOP, 0.5f, editorArea);
 		folder.addPlaceholder(View.ID + ":*");
 		folder.addView(View.ID);
+		
+		IFolderLayout consoleFolder = layout.createFolder("console",  
+		        IPageLayout.BOTTOM, 0.65f, "messages");  
+		consoleFolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);  
 		
 		layout.getViewLayout(NavigationView.ID).setCloseable(false);
 	}

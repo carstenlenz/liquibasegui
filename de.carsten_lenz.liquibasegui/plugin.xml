@@ -75,6 +75,11 @@
             id="de.carsten_lenz.liquibasegui.openRunConfigurations"
             name="Open Liquibase Run-Configurations">
       </command>
+      <command
+            defaultHandler="de.carsten_lenz.liquibasegui.ui.OpenConsoleViewHandler"
+            id="de.carsten_lenz.liquibasegui.openConsole"
+            name="Open Console">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -133,6 +138,10 @@
             </command>
             <command
                   commandId="de.carsten_lenz.liquibasegui.openRunConfigurations"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.carsten_lenz.liquibasegui.openConsole"
                   style="push">
             </command>
          </menu>
