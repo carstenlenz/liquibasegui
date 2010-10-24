@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -46,6 +47,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 import de.carsten_lenz.liquibasegui.model.ChangeLogParameter;
 import de.carsten_lenz.liquibasegui.model.RunConfiguration;
@@ -97,6 +99,19 @@ public class RunConfigurationsComposite extends Composite {
         
         ToolBar toolBar = new ToolBar(leftComposite, SWT.FLAT | SWT.RIGHT);
         toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        
+        ToolItem tltmNew = new ToolItem(toolBar, SWT.NONE);
+        tltmNew.setText("New");
+        tltmNew.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                RunConfiguration runConfiguration = new RunConfiguration();
+                runConfiguration.setConfigurationName("New Configuration");
+                configurations.add(runConfiguration);
+                runConfigurationsListViewer.refresh(null, true);
+                runConfigurationsListViewer.setSelection(new StructuredSelection(runConfiguration));
+            }
+        });
         
         runConfigurationsListViewer = new ListViewer(leftComposite, SWT.BORDER | SWT.V_SCROLL);
         List runConfigurationsList = runConfigurationsListViewer.getList();
