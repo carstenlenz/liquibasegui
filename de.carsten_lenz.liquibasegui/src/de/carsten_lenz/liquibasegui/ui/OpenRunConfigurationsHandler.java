@@ -11,7 +11,7 @@ import de.carsten_lenz.liquibasegui.model.ChangeLogParameter;
 import de.carsten_lenz.liquibasegui.model.RunConfiguration;
 
 
-class OpenRunConfigurationsHandler extends AbstractHandler {
+public class OpenRunConfigurationsHandler extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) {
         

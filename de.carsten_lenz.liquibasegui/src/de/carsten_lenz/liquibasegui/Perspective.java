@@ -5,6 +5,8 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
 
+import de.carsten_lenz.liquibasegui.ui.CommandView;
+
 public class Perspective implements IPerspectiveFactory {
 
 	/**
@@ -16,15 +18,12 @@ public class Perspective implements IPerspectiveFactory {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
 		
-		layout.addStandaloneView(NavigationView.ID,  false, IPageLayout.LEFT, 0.25f, editorArea);
-		IFolderLayout folder = layout.createFolder("messages", IPageLayout.TOP, 0.5f, editorArea);
-		folder.addPlaceholder(View.ID + ":*");
-		folder.addView(View.ID);
+		layout.addStandaloneView(CommandView.ID,  false, IPageLayout.TOP, 0.5f, editorArea);
 		
 		IFolderLayout consoleFolder = layout.createFolder("console",  
-		        IPageLayout.BOTTOM, 0.65f, "messages");  
+		        IPageLayout.BOTTOM, 0.5f, "messages");  
 		consoleFolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);  
 		
-		layout.getViewLayout(NavigationView.ID).setCloseable(false);
+		layout.getViewLayout(CommandView.ID).setCloseable(false);
 	}
 }

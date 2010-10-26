@@ -22,20 +22,6 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="Message"
-            allowMultiple="true"
-            icon="icons/sample2.gif"
-            class="de.carsten_lenz.liquibasegui.View"
-            id="de.carsten_lenz.liquibasegui.view">
-      </view>
-      <view
-            name="Mailboxes"
-            allowMultiple="true"
-            icon="icons/sample3.gif"
-            class="de.carsten_lenz.liquibasegui.NavigationView"
-            id="de.carsten_lenz.liquibasegui.navigationView">
-      </view>
-      <view
             allowMultiple="false"
             class="de.carsten_lenz.liquibasegui.ui.CommandView"
             id="de.carsten_lenz.liquibasegui.commandView"
@@ -131,7 +117,7 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               label="NewFile">
+               label="Liquibase">
             <command
                   commandId="de.carsten_lenz.liquibasegui.openCommandView"
                   style="push">

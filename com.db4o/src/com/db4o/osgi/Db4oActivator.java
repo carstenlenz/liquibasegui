@@ -13,6 +13,8 @@ import org.osgi.framework.*;
 public class Db4oActivator implements BundleActivator {
 
 	public final static String BUNDLE_ID = "com.db4o";
+    
+	private ServiceRegistration serviceRegistration;
 	
 	/**
 	 * This method is called when the bundle is started by the Framework. 
@@ -24,10 +26,10 @@ public class Db4oActivator implements BundleActivator {
 	 *         bundle, and release all services used by this bundle. 
 	 */
 	public void start(BundleContext context) throws Exception {
-		context.registerService(
+		serviceRegistration = context.registerService(
 				Db4oService.class.getName(),
 				new Db4oServiceFactory(), 
-				new Hashtable());		
+				new Hashtable<Object, Object>());	
 	}
 	
 	/**
@@ -39,6 +41,7 @@ public class Db4oActivator implements BundleActivator {
 	 *         bundle, and release all services used by the bundle.
 	 */
 	public void stop(BundleContext context) throws Exception {
+	    serviceRegistration.unregister();
 	}
 
 }

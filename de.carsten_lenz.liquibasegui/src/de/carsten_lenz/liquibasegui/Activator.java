@@ -6,9 +6,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
+import com.db4o.osgi.Db4oService;
 
 import de.carsten_lenz.liquibasegui.model.RunConfiguration;
 
@@ -24,6 +26,8 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator plugin;
 	
 	private ObjectContainer db;
+
+    private ServiceTracker db4oServiceTracker;
 	
 	/**
 	 * The constructor
@@ -39,11 +43,23 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		
+		db4oServiceTracker = new ServiceTracker(context, Db4oService.class.getName(), null);
+		db4oServiceTracker.open();
+		
 		IPath stateLocation = this.getStateLocation();
 		IPath dbFilePath = stateLocation.append("configurations.db4o");
+		Db4oService db4oService = getDb4oService();
+		db = db4oService.openFile(dbFilePath.toOSString());
 		
-		db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), dbFilePath.toOSString());
+		RunConfiguration test = new RunConfiguration();
+		test.setConfigurationName("Test");
+		db.store(test);
+		db.commit();
 	}
+
+    private Db4oService getDb4oService() {
+        return (Db4oService) db4oServiceTracker.getService();
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -51,6 +67,8 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 	    db.close();
+	    
+	    db4oServiceTracker.close();
 	    
 		plugin = null;
 		super.stop(context);

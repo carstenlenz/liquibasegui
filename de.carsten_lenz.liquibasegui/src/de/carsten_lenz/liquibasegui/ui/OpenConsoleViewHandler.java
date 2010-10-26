@@ -8,7 +8,7 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 
-class OpenConsoleViewHandler extends AbstractHandler {
+public class OpenConsoleViewHandler extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) {
         MessageConsole messageConsole = new MessageConsole("Test", null);
